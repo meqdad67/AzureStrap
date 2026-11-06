@@ -1,0 +1,14 @@
+.menu { display: grid; grid-template-columns: 240px 1fr; gap: 20px; height: 100%; padding: 26px 28px; }
+aside { display: flex; flex-direction: column; align-items: flex-start; }
+.big { width: 84px; height: 84px; border-radius: 20px; margin-bottom: 14px; }
+h1 { font-size: 26px; font-weight: 700; margin: 0 0 2px; }
+aside p { margin: 0 0 22px; }
+.link { background: none; border: 0; padding: 6px 0; color: var(--accent); cursor: pointer; text-align: start; }
+.link:hover { text-decoration: underline; }
+section { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.tile { display: flex; align-items: center; gap: 12px; width: 100%; text-align: start; padding: 16px 18px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; box-shadow: var(--shadow); font-size: 14.5px; }
+.tile:hover { background: var(--hover); }
+.tile .chev { margin-inline-start: auto; font-style: normal; font-size: 20px; color: var(--muted); }
+[dir="rtl"] .tile .chev { transform: scaleX(-1); }
+.tile.help { margin-top: 14px; }
+.tile.help > div { flex: 1; }

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' file: data:">
+  <title>Azure Strap Setup</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="wizard.css">
+</head>
+<body class="dark-surface">
+  <div class="drag"></div>
+  <button class="x" id="x" aria-label="Close">×</button>
+  <div class="wiz">
+    <aside class="art" aria-hidden="true">
+      <img src="../../assets/icon.png" alt="">
+      <svg viewBox="0 0 400 24" preserveAspectRatio="none" class="deco"><path d="M0 12 C 25 0, 50 24, 100 12 S 175 0, 200 12 S 275 24, 300 12 S 375 0, 400 12"/></svg>
+      <ol id="dots"></ol>
+    </aside>
+    <main id="step" tabindex="-1"></main>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="shared.js"></script>
+  <script src="wizard.js"></script>
+</body>
+</html>

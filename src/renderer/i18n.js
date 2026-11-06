@@ -1,0 +1,163 @@
+// Shared strings. English is the default; Arabic falls back to English for anything missing.
+window.I18N = {
+  en: {
+    app: 'Azure Strap', version: 'Version',
+    launchRoblox: 'Launch Roblox', settings: 'Settings',
+    helpTitle: 'Having an issue?', helpSub: 'Open the data folder to find logs',
+    aboutApp: 'About Azure Strap', openData: 'Open data folder',
+    saveLaunch: 'Save and Launch', restart: 'Restart', save: 'Save', close: 'Close',
+    saved: 'Settings saved', unsaved: 'You have unsaved changes',
+
+    nav_integrations: 'Integrations', nav_bootstrapper: 'Bootstrapper', nav_mods: 'Mods',
+    nav_fastflags: 'FastFlag Settings', nav_appearance: 'Appearance', nav_shortcuts: 'Shortcuts',
+    nav_packs: 'Shaders', packs_t: 'Shaders', packs_d: 'Add skies, textures and other look changes. Packs are plain files, so they need no graphics card.',
+    packsHelp: 'Import a .zip or a folder that uses Roblox\'s folder layout, for example content/sky/. Programs and scripts are never copied. These are not real shaders: Roblox blocks tools that hook into the game.',
+    packsImport: 'Import pack', packsEmpty: 'No packs yet. Import one to get started.', packFiles: 'files', remove: 'Remove',
+    packsFail: 'Could not import that pack.', packsEmptyZip: 'That pack has no files.',
+    nav_settings: 'Settings', nav_about: 'About',
+
+    integrations_t: 'Integrations', integrations_d: 'Choose how Azure Strap connects to Roblox and your system.',
+    handleLinks_t: 'Open Roblox links with Azure Strap', handleLinks_d: 'Play buttons on the Roblox website will start the game through Azure Strap.',
+    closeOnLaunch_t: 'Close Azure Strap after launch', closeOnLaunch_d: 'Azure Strap exits once Roblox has started, so it uses no memory while you play.',
+
+    bootstrapper_t: 'Bootstrapper', bootstrapper_d: 'Configure what Azure Strap does when launching Roblox.',
+    confirmLaunch_t: 'Instance launch confirmation', confirmLaunch_d: 'Asks first if Roblox is already open, so you do not close your game by accident.',
+    closeCrashHandler_t: 'Close crash handler', closeCrashHandler_d: 'Closes RobloxCrashHandler.exe after launch to free a little system usage.',
+    uncapFps_t: 'Uncap FPS', uncapFps_d: 'Removes the 240 FPS limit so your FPS limit can go higher.',
+    multiInstance_t: 'Multi-instance launching', multiInstance_d: 'Lets you open more than one Roblox window at the same time. May cause issues.',
+    priority_t: 'Roblox process priority', priority_d: 'CPU priority for Roblox. High can help on a busy PC.',
+    p_normal: 'Normal', p_abovenormal: 'Above normal', p_high: 'High',
+    backgroundUpdates_t: 'Background updates', backgroundUpdates_d: 'Downloads the next Roblox update while you play instead of making you wait. Needs about 3 GB of free space.',
+    cleaner_t: 'Azure cleaner', cleaner_d: 'Automatically clears old data to free up space.',
+    cleanerSchedule_t: 'File deletion schedule', cleanerSchedule_d: 'Files older than this will be deleted.',
+    s_never: 'Never', s_1d: '1 day', s_7d: '7 days', s_30d: '30 days',
+    cleanCache_t: 'Cache', cleanCache_d: 'Old downloads will be deleted.',
+    cleanLogs_t: 'Roblox logs', cleanLogs_d: 'Old Roblox log files will be deleted.',
+    winOnly: 'Windows only',
+
+    mods_t: 'Mods', mods_d: 'Replace Roblox textures, sounds and fonts with your own files.',
+    useMods_t: 'Enable mods', useMods_d: 'Files in the Mods folder are copied into Roblox every time you launch.',
+    openMods: 'Open Mods folder', modsFiles: 'Files in the Mods folder', modsEmpty: 'No mod files yet.',
+    modsHelp: 'Use the same folder layout as Roblox, for example content/sounds/ouch.ogg. Programs and scripts are ignored.',
+
+    fastflags_t: 'FastFlag Settings', fastflags_d: 'Tune how Roblox renders. Roblox only accepts flags on its own allow-list, so some may be ignored.',
+    fpsCap_t: 'FPS limit', fpsCap_d: 'The highest frame rate Roblox will try to reach.',
+    fpsDefault: 'Roblox default', fpsUnlimited: 'Unlimited',
+    renderer_t: 'Graphics API', renderer_d: 'Direct3D 11 is the safest choice on most Windows PCs.',
+    auto: 'Automatic',
+    textureQuality_t: 'Texture quality', textureQuality_d: 'Lower textures use less video memory.',
+    q0: 'Lowest', q1: 'Low', q2: 'Medium', q3: 'High',
+    perfPreset_t: 'Performance preset', perfPreset_d: 'Bundles of flags that trade visuals for speed.',
+    pr_off: 'Off', pr_balanced: 'Balanced', pr_max: 'Max FPS', pr_lowend: 'Low-end PC',
+    presetHelp_off: 'No extra flags.',
+    presetHelp_balanced: 'Turns off telemetry and anti-aliasing. Almost no visual change.',
+    presetHelp_max: 'Balanced plus no shadows, no post-processing and simple lighting.',
+    presetHelp_lowend: 'Max FPS plus no grass and the lowest textures. For weak PCs.',
+    customFlags_t: 'Custom FastFlags (JSON)', flagsBad: 'This is not valid JSON, so it will be ignored.',
+    format: 'Format', reset: 'Clear',
+
+    appearance_t: 'Appearance', appearance_d: 'Change how Azure Strap and your Roblox shortcuts look.',
+    theme_t: 'Theme', theme_d: 'Light, dark, or follow your system.',
+    th_system: 'Use system setting', th_light: 'Light', th_dark: 'Dark',
+    lang_t: 'Language', lang_d: 'The language used inside Azure Strap.',
+    icon_t: 'Icon', icon_d: 'Used for your Azure Strap shortcut and the launch window. Pick an era, keep the Azure Strap icon, or use your own image.',
+    iconPick: 'Use my own image...', iconPickFail: 'Could not use that image.',
+
+    shortcuts_t: 'Shortcuts', shortcuts_d: 'Create shortcuts that launch Roblox through Azure Strap.',
+    scDesktop_t: 'Desktop shortcut', scDesktop_d: 'Adds Azure Strap to your desktop.',
+    scStart_t: 'Start menu shortcut', scStart_d: 'Adds Azure Strap to your Start menu.',
+    create: 'Create', scDone: 'Shortcuts created.', scFail: 'Shortcuts need the installed app on Windows.',
+
+    settings_t: 'Settings', settings_d: 'General options for Azure Strap.',
+    openData_t: 'Data folder', openData_d: 'Settings, logs and downloads are stored here.',
+
+    about_t: 'About', about_d: 'Azure Strap keeps Roblox installed and up to date, then starts it with your settings.',
+    disclaimer: 'Azure Strap is not made by or affiliated with Roblox Corporation. It downloads the official Roblox client and never changes game code.',
+
+    // statuses
+    idle: 'Ready to play', checking: 'Checking for updates', downloading: 'Downloading Roblox',
+    installing: 'Installing Roblox', installingWebView2: 'Installing a Windows component Roblox needs...', launching: 'Launching Roblox', running: 'Roblox is running',
+    installingSober: 'Installing Sober (Roblox for Linux)', offline: 'Offline, using installed version',
+    cancel: 'Cancel',
+
+    // setup wizard
+    w_welcome_t: 'Welcome to Azure Strap', w_welcome_d: 'A fast, light Roblox launcher. Setup takes about a minute.', w_start: 'Get started',
+    w_lang_t: 'Choose your language', w_lang_d: 'You can change this later in Appearance.',
+    w_icon_t: 'Choose your Roblox icon', w_icon_d: 'Pick the look you like, from the classic days to today.',
+    w_perf_t: 'How should Roblox run?', w_perf_d: 'You can fine-tune everything later in FastFlag Settings.',
+    w_perf_off: 'Default', w_perf_off_d: 'Leave Roblox as it is.',
+    w_perf_balanced: 'Balanced', w_perf_balanced_d: 'Smoother, with almost no visual change.',
+    w_perf_max: 'Max FPS', w_perf_max_d: 'Simpler visuals for the best frame rate.',
+    w_perf_lowend: 'Low-end PC', w_perf_lowend_d: 'Lowest settings for older computers.',
+    w_next: 'Next', w_back: 'Back', w_install: 'Install Roblox',
+    w_installing_t: 'Setting things up', w_installing_d: 'Downloading Roblox and creating your shortcuts. Keep this window open.',
+    w_done_t: 'You are all set', w_done_d: 'Roblox is installed and your shortcuts are ready.',
+    w_launch: 'Launch Roblox', w_openSettings: 'Open settings', w_retry: 'Try again',
+    w_error_t: 'Setup could not finish'
+  },
+
+  ar: {
+    launchRoblox: 'شغّل روبلوكس', settings: 'الإعدادات',
+    helpTitle: 'عندك مشكلة؟', helpSub: 'افتح مجلد البيانات عشان تلقى السجلات',
+    aboutApp: 'عن Azure Strap', openData: 'افتح مجلد البيانات',
+    saveLaunch: 'احفظ وشغّل', restart: 'إعادة تشغيل', save: 'حفظ', close: 'إغلاق',
+    saved: 'تم حفظ الإعدادات', unsaved: 'عندك تغييرات ما انحفظت',
+
+    nav_packs: 'الشيدرز', packs_t: 'الشيدرز', packs_d: 'أضف سماء وتكسترات وتغييرات شكل. الحزم ملفات عادية، فما تحتاج كرت شاشة.',
+    packsHelp: 'استورد ملف zip أو مجلد بنفس ترتيب مجلدات روبلوكس، مثل content/sky/. البرامج والسكربتات ما تنسخ ابداً. هذي مو شيدرز حقيقية، لأن روبلوكس يمنع الأدوات اللي تتدخل في اللعبة.',
+    packsImport: 'استورد حزمة', packsEmpty: 'ما فيه حزم للحين. استورد وحدة.', packFiles: 'ملف', remove: 'احذف',
+    packsFail: 'ما قدرنا نستورد الحزمة.', packsEmptyZip: 'الحزمة فاضية.',
+    nav_integrations: 'التكامل', nav_bootstrapper: 'المشغّل', nav_mods: 'المودات',
+    nav_fastflags: 'إعدادات FastFlag', nav_appearance: 'المظهر', nav_shortcuts: 'الاختصارات',
+    nav_settings: 'الإعدادات', nav_about: 'عن البرنامج',
+
+    handleLinks_t: 'افتح روابط روبلوكس عن طريق Azure Strap',
+    closeOnLaunch_t: 'اقفل Azure Strap بعد التشغيل',
+    bootstrapper_t: 'المشغّل',
+    confirmLaunch_t: 'تأكيد تشغيل نسخة ثانية', closeCrashHandler_t: 'إغلاق معالج الأعطال',
+    uncapFps_t: 'فك حد الفريمات', multiInstance_t: 'تشغيل أكثر من نسخة',
+    priority_t: 'أولوية روبلوكس في المعالج', p_normal: 'عادية', p_abovenormal: 'فوق العادية', p_high: 'عالية',
+    backgroundUpdates_t: 'التحديث بالخلفية', cleaner_t: 'منظّف Azure',
+    cleanerSchedule_t: 'جدول حذف الملفات', s_never: 'أبداً', s_1d: 'يوم', s_7d: '7 أيام', s_30d: '30 يوم',
+    cleanCache_t: 'الكاش', cleanLogs_t: 'سجلات روبلوكس',
+
+    mods_t: 'المودات', useMods_t: 'تفعيل المودات', openMods: 'افتح مجلد Mods',
+    modsFiles: 'الملفات داخل مجلد Mods', modsEmpty: 'ما فيه ملفات مودات للحين.',
+
+    fastflags_t: 'إعدادات FastFlag', fpsCap_t: 'حد الفريمات', fpsDefault: 'الافتراضي', fpsUnlimited: 'بدون حد',
+    renderer_t: 'واجهة الرسوميات', auto: 'تلقائي', textureQuality_t: 'جودة التكسترات',
+    q0: 'الأقل', q1: 'منخفضة', q2: 'متوسطة', q3: 'عالية',
+    perfPreset_t: 'وضع الأداء', pr_off: 'مطفّي', pr_balanced: 'متوازن', pr_max: 'أعلى FPS', pr_lowend: 'جهاز ضعيف',
+    customFlags_t: 'فلاقات مخصصة (JSON)', flagsBad: 'هذا مو JSON صحيح، فبيتم تجاهله.',
+    format: 'ترتيب', reset: 'مسح',
+
+    appearance_t: 'المظهر', theme_t: 'الثيم', th_system: 'حسب النظام', th_light: 'فاتح', th_dark: 'داكن',
+    lang_t: 'اللغة', icon_t: 'الشعار', iconPick: 'استخدم صورتي الخاصة...', iconPickFail: 'ما قدرنا نستخدم الصورة.',
+
+    shortcuts_t: 'الاختصارات', scDesktop_t: 'اختصار سطح المكتب', scStart_t: 'اختصار قائمة ابدأ',
+    create: 'إنشاء', scDone: 'تم إنشاء الاختصارات.', scFail: 'الاختصارات تحتاج النسخة المثبتة على ويندوز.',
+
+    settings_t: 'الإعدادات', openData_t: 'مجلد البيانات',
+    about_t: 'عن البرنامج',
+    disclaimer: 'Azure Strap مو من صنع شركة روبلوكس وما له علاقة فيها. يحمّل النسخة الرسمية ولا يعدّل على كود اللعبة.',
+
+    idle: 'جاهز للعب', checking: 'جاري البحث عن تحديثات', downloading: 'جاري تحميل روبلوكس',
+    installing: 'جاري تثبيت روبلوكس', installingWebView2: 'جاري تثبيت مكوّن ويندوز يحتاجه روبلوكس...', launching: 'جاري تشغيل روبلوكس', running: 'روبلوكس شغّال',
+    installingSober: 'جاري تثبيت Sober (روبلوكس للينكس)', offline: 'بدون انترنت، استخدمنا النسخة المثبتة',
+    cancel: 'إلغاء',
+
+    w_welcome_t: 'أهلاً فيك في Azure Strap', w_welcome_d: 'لانشر روبلوكس سريع وخفيف. الإعداد ياخذ دقيقة تقريباً.', w_start: 'يلا نبدأ',
+    w_lang_t: 'اختر لغتك', w_lang_d: 'تقدر تغيّرها بعدين من المظهر.',
+    w_icon_t: 'اختر شعار روبلوكس', w_icon_d: 'اختر الشكل اللي يعجبك، من الأيام القديمة لين اليوم.',
+    w_perf_t: 'كيف تبي روبلوكس يشتغل؟', w_perf_d: 'تقدر تعدّل كل شي بعدين من إعدادات FastFlag.',
+    w_perf_off: 'افتراضي', w_perf_off_d: 'خل روبلوكس مثل ما هو.',
+    w_perf_balanced: 'متوازن', w_perf_balanced_d: 'أسلس، تقريباً بدون تغيير بالشكل.',
+    w_perf_max: 'أعلى FPS', w_perf_max_d: 'رسوميات أبسط لأفضل عدد فريمات.',
+    w_perf_lowend: 'جهاز ضعيف', w_perf_lowend_d: 'أقل إعدادات للأجهزة القديمة.',
+    w_next: 'التالي', w_back: 'رجوع', w_install: 'ثبّت روبلوكس',
+    w_installing_t: 'جاري التجهيز', w_installing_d: 'نحمّل روبلوكس وننشئ الاختصارات. لا تقفل هذي النافذة.',
+    w_done_t: 'كل شي جاهز', w_done_d: 'روبلوكس انثبت والاختصارات جاهزة.',
+    w_launch: 'شغّل روبلوكس', w_openSettings: 'افتح الإعدادات', w_retry: 'حاول مرة ثانية',
+    w_error_t: 'ما قدرنا نكمل الإعداد'
+  }
+};

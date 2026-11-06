@@ -1,0 +1,80 @@
+{
+  "name": "azure-strap",
+  "productName": "Azure Strap",
+  "version": "1.2.0",
+  "description": "Lightweight Roblox launcher for Windows, macOS and Linux",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "extract-zip": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "io.azurestrap.app",
+    "productName": "Azure Strap",
+    "files": [
+      "src/**",
+      "assets/**"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "protocols": [
+      {
+        "name": "Roblox",
+        "schemes": [
+          "roblox",
+          "roblox-player"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.games",
+      "icon": "build/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Game",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Azure Strap",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "author": {
+    "name": "Azure Strap",
+    "email": "azurestrap@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/meqdadgemrs31-png/azure-strap",
+  "license": "MIT"
+}

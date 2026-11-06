@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' file: data:">
+  <title>Azure Strap Settings</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="shell">
+    <nav id="nav" aria-label="Settings"></nav>
+    <main id="page" tabindex="-1"></main>
+  </div>
+  <footer>
+    <span id="msg" class="muted"></span>
+    <div class="actions">
+      <button class="btn primary" id="saveLaunch"></button>
+      <button class="btn" id="restart"></button>
+      <button class="btn" id="save"></button>
+      <button class="btn" id="close"></button>
+    </div>
+  </footer>
+  <script src="i18n.js"></script>
+  <script src="shared.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+/* Setup + progress windows: dark azure surface, unlike the light settings app. */
+.dark-surface {
+  --text: #e8f4ff; --muted: rgba(232,244,255,.65); --line: rgba(232,244,255,.18);
+  --card: rgba(232,244,255,.07); --card-2: rgba(232,244,255,.1); --hover: rgba(232,244,255,.14); --accent: #3dd5ff; --accent-ink: #08163a;
+  background: radial-gradient(120% 120% at 0% 0%, #1e7be8 0%, #0f2f75 38%, #08163a 100%);
+  color: var(--text);
+}
+.drag { position: fixed; inset: 0 0 auto 0; height: 36px; -webkit-app-region: drag; }
+.x { position: fixed; inset-block-start: 8px; inset-inline-end: 10px; width: 32px; height: 28px; background: none; border: 0; color: var(--text); font-size: 22px; line-height: 1; border-radius: 6px; cursor: pointer; z-index: 5; -webkit-app-region: no-drag; }
+.x:hover { background: var(--hover); }
+.soft { color: var(--muted); }
+
+.wiz { display: grid; grid-template-columns: 260px 1fr; height: 100%; }
+.art { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; padding: 30px; background: rgba(8,22,58,.35); border-inline-end: 1px solid var(--line); }
+.art img { width: 120px; height: 120px; border-radius: 28px; box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+.deco { width: 160px; height: 24px; overflow: visible; }
+.deco path { fill: none; stroke: #3dd5ff; stroke-width: 3.5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+#dots { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
+#dots li { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+#dots li.on { background: #3dd5ff; width: 22px; border-radius: 4px; transition: width .2s; }
+
+main { padding: 54px 44px 28px; display: flex; flex-direction: column; min-height: 0; outline: none; }
+main h1 { font-size: 30px; margin: 0 0 8px; font-weight: 700; }
+main > p { margin: 0 0 20px; line-height: 1.55; }
+.body { flex: 1; overflow-y: auto; min-height: 0; padding: 2px; }
+.nav { display: flex; justify-content: space-between; gap: 10px; padding-top: 18px; }
+.nav .grow { flex: 1; }
+
+.btn.big { padding: 11px 28px; font-size: 15px; background: #e8f4ff; color: #08163a; border: 0; font-weight: 600; }
+.btn.big:hover { background: #fff; filter: none; }
+.btn.ghost, .ghost-btn { background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 9px 18px; cursor: pointer; }
+.btn.ghost:hover, .ghost-btn:hover { background: var(--hover); }
+
+.choice { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: block; width: 100%; text-align: start; padding: 14px 16px; background: var(--card); border: 2px solid transparent; border-radius: 10px; cursor: pointer; }
+.opt:hover { background: var(--hover); }
+.opt[aria-checked="true"] { border-color: #3dd5ff; background: var(--card-2); }
+.opt strong { display: block; margin-bottom: 2px; }
+.opt span { color: var(--muted); font-size: 13px; }
+.dark-surface .icon-tile { background: var(--card); color: var(--text); }
+.dark-surface .icon-tile[aria-checked="true"] { border-color: #3dd5ff; }
+.err { color: #ffb4ab; }
+
+/* progress window */
+.prog { display: grid; grid-template-columns: 84px 1fr; gap: 18px; padding: 30px 28px 20px; height: 100%; align-content: start; position: relative; }
+.prog img { width: 84px; height: 84px; border-radius: 20px; }
+.prog h2 { margin: 4px 0 2px; font-size: 20px; }
+.prog p { margin: 4px 0; min-height: 1.2em; }
+.prog .ghost-btn { position: absolute; inset-inline-end: 22px; inset-block-end: 18px; padding: 6px 16px; }
+.prog-body { min-width: 0; }

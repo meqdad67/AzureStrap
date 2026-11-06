@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' file: data:">
+  <title>Azure Strap</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+  <div class="menu">
+    <aside>
+      <img src="../../assets/icon.png" alt="" class="big">
+      <h1>Azure Strap</h1>
+      <p class="muted"><span data-i18n="version"></span> <span id="ver"></span></p>
+      <button class="link" id="about" data-i18n="aboutApp"></button>
+      <button class="link" id="data" data-i18n="openData"></button>
+    </aside>
+    <section>
+      <button class="tile wide" id="launch">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M7 6h10a5 5 0 0 1 0 10h-1.5l-2-2h-3l-2 2H7A5 5 0 0 1 7 6Zm1 3v1H7v1h1v1h1v-1h1v-1H9V9H8Zm8 .5a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>
+        <span data-i18n="launchRoblox"></span><em class="chev">›</em>
+      </button>
+      <button class="tile" id="settings">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>
+        <span data-i18n="settings"></span><em class="chev">›</em>
+      </button>
+      <button class="tile help" id="help">
+        <div><strong data-i18n="helpTitle"></strong><div class="muted small" data-i18n="helpSub"></div></div><em class="chev">›</em>
+      </button>
+      <p id="error" class="error" hidden></p>
+    </section>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="shared.js"></script>
+  <script src="menu.js"></script>
+</body>
+</html>

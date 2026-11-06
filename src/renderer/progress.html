@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' file: data:">
+  <title>Azure Strap</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="wizard.css">
+</head>
+<body class="dark-surface">
+  <div class="prog">
+    <img id="logo" src="../../assets/icon.png" alt="">
+    <div class="prog-body">
+      <h2 id="status"></h2>
+      <p id="sub" class="soft"></p>
+      <div id="wave"></div>
+      <p id="pct" class="soft"></p>
+      <p id="error" class="err" role="alert" hidden></p>
+    </div>
+    <button class="ghost-btn" id="cancel"></button>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="shared.js"></script>
+  <script src="progress.js"></script>
+</body>
+</html>
