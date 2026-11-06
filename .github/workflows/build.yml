@@ -20,7 +20,16 @@ jobs:
         with: { node-version: 20 }
       - run: npm install
       - run: npx electron-builder --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: azure-strap-${{ matrix.os }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
+            dist/*.deb
       - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
             dist/*.exe
