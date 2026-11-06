@@ -1,4 +1,4 @@
- Auto release from update zip
+name: Auto release from update zip
 on:
   push:
     paths:
