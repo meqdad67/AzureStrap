@@ -291,7 +291,7 @@ async function ensureInstalled(root, progress, opts = {}) {
   try {
     // With a copy already installed, give the version check only a few seconds, so a slow
     // network never holds up the launch. If it fails, the installed copy is used.
-    info = await latest({ timeoutMs: have.length ? 4000 : REQUEST_MS });
+    info = await latest({ timeoutMs: have.length ? 2500 : REQUEST_MS });
   } catch (e) {
     // Offline? Fall back to the newest installed version so the game still opens.
     if (!have.length) throw e;
@@ -332,48 +332,47 @@ async function ensureInstalled(root, progress, opts = {}) {
 
 /* ---------- settings -> files ---------- */
 
-const TELEMETRY_OFF = {
-  FFlagDebugDisableTelemetryEphemeralCounter: true,
-  FFlagDebugDisableTelemetryEphemeralStat: true,
-  FFlagDebugDisableTelemetryEventIngest: true,
-  FFlagDebugDisableTelemetryV2Counter: true,
-  FFlagDebugDisableTelemetryV2Event: true,
-  FFlagDebugDisableTelemetryV2Stat: true
-};
+// Since September 2025 Roblox only reads the flags on its published allowlist from
+// ClientAppSettings.json; every other flag is silently ignored. So only allowed flags are
+// written here. (The old frame-rate flags, telemetry flags and shadow flags did nothing.)
+// The frame-rate limit is now a setting inside Roblox: Settings > Graphics > Maximum Frame Rate.
+//
+// The mesh "level of detail" distances are the safe way to gain frames without anyone
+// noticing: far away meshes switch to a cheaper model earlier, and the full model comes back
+// by itself as you get close.
+const LOD = (a, b, c, d) => ({
+  DFIntCSGLevelOfDetailSwitchingDistance: a,
+  DFIntCSGLevelOfDetailSwitchingDistanceL12: b,
+  DFIntCSGLevelOfDetailSwitchingDistanceL23: c,
+  DFIntCSGLevelOfDetailSwitchingDistanceL34: d
+});
 
-// Roblox only honours flags on its own allow-list, so some of these may be ignored by the game.
 const PRESETS = {
   off: {},
-  balanced: { ...TELEMETRY_OFF, FIntDebugForceMSAASamples: 1 },
+  balanced: { FIntDebugForceMSAASamples: 1, ...LOD(250, 500, 750, 1000) },
   max: {
-    ...TELEMETRY_OFF,
     FIntDebugForceMSAASamples: 1,
-    FFlagDisablePostFx: true,
-    FIntRenderShadowIntensity: 0,
-    DFFlagDebugRenderForceTechnologyVoxel: true
+    ...LOD(120, 240, 360, 480),
+    FIntFRMMaxGrassDistance: 60,
+    FIntFRMMinGrassDistance: 0
   },
   lowend: {
-    ...TELEMETRY_OFF,
     FIntDebugForceMSAASamples: 1,
-    FFlagDisablePostFx: true,
-    FIntRenderShadowIntensity: 0,
-    DFFlagDebugRenderForceTechnologyVoxel: true,
-    FIntFRMMinGrassDistance: 0,
+    ...LOD(60, 120, 180, 240),
     FIntFRMMaxGrassDistance: 0,
-    DFFlagTextureQualityOverride: true,
+    FIntFRMMinGrassDistance: 0,
+    DFIntDebugFRMQualityLevelOverride: 1,
+    DFFlagTextureQualityOverrideEnabled: true,
     DFIntTextureQualityOverride: 0
   }
 };
 
 function buildFlags(s) {
   const f = { ...(PRESETS[s.perfPreset] || {}) };
-  if (s.fpsCap > 0) f.DFIntTaskSchedulerTargetFps = Number(s.fpsCap);
-  if (s.uncapFps) f.FFlagTaskSchedulerLimitTargetFpsTo2402 = false;
   if (s.renderer === 'd3d11') f.FFlagDebugGraphicsPreferD3D11 = true;
   if (s.renderer === 'vulkan') f.FFlagDebugGraphicsPreferVulkan = true;
-  if (s.renderer === 'metal') f.FFlagDebugGraphicsPreferMetal = true;
   if (s.textureQuality !== 'auto') {
-    f.DFFlagTextureQualityOverride = true;
+    f.DFFlagTextureQualityOverrideEnabled = true;
     f.DFIntTextureQualityOverride = Number(s.textureQuality);
   }
   try { Object.assign(f, JSON.parse(s.customFlags || '{}')); } catch { /* UI validates */ }
@@ -524,7 +523,7 @@ const CODE_HINTS = {
 
 // Waits up to tries * stepMs for the game to appear. Throws a readable error if it
 // could not start, or if it closed right away (instead of failing silently).
-async function watchLaunch(child, isUp, stepMs = 1000, tries = 20) {
+async function watchLaunch(child, isUp, stepMs = 400, tries = 50) {
   let exited = false, exitCode = null, spawnErr = null;
   child.once('error', e => { spawnErr = e; });
   child.once('exit', c => { exited = true; exitCode = c; });

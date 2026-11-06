@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('azure', {
   packsRemove: call('packsRemove'),
   openData: call('openData'),
   restart: call('restart'),
+  checkUpdate: call('checkUpdate'),
   shortcuts: call('shortcuts'),
   pickIcon: call('pickIcon'),
   closeSelf: call('closeSelf'),
@@ -26,5 +27,6 @@ contextBridge.exposeInMainWorld('azure', {
   onStatus: cb => on('status', cb),
   onVersion: cb => on('version', cb),
   onError: cb => on('error', cb),
-  onSettings: cb => on('settings', cb)
+  onSettings: cb => on('settings', cb),
+  onUpdate: cb => on('update', cb)
 });

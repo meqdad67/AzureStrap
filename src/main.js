@@ -5,6 +5,7 @@ const bs = require('./bootstrapper');
 const store = require('./store');
 const icons = require('./icons');
 const { extractZip } = require('./unzip');
+const updater = require('./updater');
 
 // The AppImage cannot use Chromium's sandbox on many Linux systems (it needs setuid or user
 // namespaces) and would not start at all. The app only shows its own local pages.
@@ -122,6 +123,12 @@ async function ensureRuntime(onProgress) {
 async function play(uri) {
   if (busy) return;
 
+  // The person pressed "Later" on an update more than a day ago: it is required now.
+  if (settings.updatePostponedAt && Date.now() - settings.updatePostponedAt >= 864e5) {
+    const u = await updater.check({ manual: false });
+    if (u.status === 'updating') return;
+  }
+
   if (bs.isWin && !settings.multiInstance && settings.confirmLaunch && (await bs.isRunning())) {
     const r = await dialog.showMessageBox({
       type: 'question', buttons: ['Launch anyway', 'Cancel'], defaultId: 1, cancelId: 1, title: 'Azure Strap',
@@ -138,9 +145,11 @@ async function play(uri) {
     const rt = await ensureRuntime(progress);
     if (rt) {
       broadcast('version', { version: rt.version, offline: !!rt.offline });
-      await bs.applySettings(rt.dir, settings, modsDir(), packsDir());
-      try { await bs.ensureWebView2(rootDir(), path.basename(rt.dir), progress); }
-      catch (e) { log('WebView2 step skipped: ' + (e && e.message ? e.message : e)); }
+      await Promise.all([
+        bs.applySettings(rt.dir, settings, modsDir(), packsDir()),
+        bs.ensureWebView2(rootDir(), path.basename(rt.dir), progress)
+          .catch(e => log('WebView2 step skipped: ' + (e && e.message ? e.message : e)))
+      ]);
       if (settings.multiInstance) bs.holdMultiInstanceMutex();
       broadcast('status', 'launching');
       log(`launching Roblox ${rt.version} from ${rt.dir}`);
@@ -153,7 +162,7 @@ async function play(uri) {
     }
     progress(100, 'launching');
 
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise(r => setTimeout(r, 250));
     if (wins.progress && !wins.progress.isDestroyed()) wins.progress.close();
 
     // Small jobs that run right after Roblox starts.
@@ -162,10 +171,12 @@ async function play(uri) {
       if (settings.closeCrashHandler) jobs.push(bs.closeCrashHandler());
       if (settings.priority !== 'normal') jobs.push(bs.tunePriority(settings.priority));
     }
-    if (settings.backgroundUpdates && !bs.isLinux) {
+    if (settings.backgroundUpdates && !bs.isLinux && !settings.closeOnLaunch) {
       jobs.push(bs.ensureInstalled(rootDir(), () => {}, { prune: false }).catch(() => {}));
     }
-    await Promise.all(jobs);
+    // Only wait when there is something to do after launch, and never longer than 15 seconds,
+    // so the launcher closes right away in the normal case.
+    if (jobs.length) await Promise.race([Promise.all(jobs), new Promise(r => setTimeout(r, 15000))]);
 
     busy = false; keepAlive = false;
     if (settings.closeOnLaunch) app.quit();
@@ -239,6 +250,8 @@ ipcMain.handle('pickIcon', async e => {
   catch { return { ok: false }; }
 });
 ipcMain.handle('shortcuts', (_e, where) => icons.shortcuts(settings.robloxIcon, where));
+
+ipcMain.handle('checkUpdate', () => updater.check({ manual: true }));
 
 ipcMain.handle('closeSelf', e => { const w = BrowserWindow.fromWebContents(e.sender); if (w) w.close(); });
 ipcMain.handle('minimizeSelf', e => { const w = BrowserWindow.fromWebContents(e.sender); if (w) w.minimize(); });
@@ -334,12 +347,18 @@ app.whenReady().then(() => {
   nativeTheme.themeSource = settings.theme;
   Menu.setApplicationMenu(null);
   registerLinks();
+  updater.init({
+    getSettings: () => settings,
+    saveSettings: patch => { settings = store.save({ ...settings, ...patch }); },
+    broadcast,
+    log
+  });
 
   const uri = pendingUri || findUri(process.argv);
   const launchFlag = process.argv.includes('--launch');
   if (uri || launchFlag) play(uri);
   else if (!settings.setupDone) openWizard();
-  else openMenu();
+  else { openMenu(); setTimeout(() => updater.check({ manual: false }), 2500); }
 
   maybeClean();
 });

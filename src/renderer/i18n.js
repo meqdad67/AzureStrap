@@ -4,7 +4,8 @@ window.I18N = {
     app: 'Azure Strap', version: 'Version',
     launchRoblox: 'Launch Roblox', settings: 'Settings',
     helpTitle: 'Having an issue?', helpSub: 'Open the data folder to find logs',
-    aboutApp: 'About Azure Strap', openData: 'Open data folder',
+    aboutApp: 'About Azure Strap', checkUpdate: 'Check for updates', updChecking: 'Checking...', updDownloading: 'Downloading update',
+    fpsNote: 'Roblox now ignores outside FPS flags. Set it inside Roblox: Settings > Graphics > Maximum Frame Rate (up to 240 on Windows). Azure Strap does the rest: simpler far-away models that switch back to full detail as you get close.', openData: 'Open data folder',
     saveLaunch: 'Save and Launch', restart: 'Restart', save: 'Save', close: 'Close',
     saved: 'Settings saved', unsaved: 'You have unsaved changes',
 
@@ -50,9 +51,9 @@ window.I18N = {
     perfPreset_t: 'Performance preset', perfPreset_d: 'Bundles of flags that trade visuals for speed.',
     pr_off: 'Off', pr_balanced: 'Balanced', pr_max: 'Max FPS', pr_lowend: 'Low-end PC',
     presetHelp_off: 'No extra flags.',
-    presetHelp_balanced: 'Turns off telemetry and anti-aliasing. Almost no visual change.',
-    presetHelp_max: 'Balanced plus no shadows, no post-processing and simple lighting.',
-    presetHelp_lowend: 'Max FPS plus no grass and the lowest textures. For weak PCs.',
+    presetHelp_balanced: 'Light anti-aliasing and slightly earlier detail switching for far models. Almost no visible change.',
+    presetHelp_max: 'Far models switch to simple versions sooner and grass is shortened. Near objects stay full quality.',
+    presetHelp_lowend: 'Max FPS plus no grass, the lowest graphics level and the lowest textures. For weak PCs.',
     customFlags_t: 'Custom FastFlags (JSON)', flagsBad: 'This is not valid JSON, so it will be ignored.',
     format: 'Format', reset: 'Clear',
 
@@ -99,7 +100,8 @@ window.I18N = {
   ar: {
     launchRoblox: 'شغّل روبلوكس', settings: 'الإعدادات',
     helpTitle: 'عندك مشكلة؟', helpSub: 'افتح مجلد البيانات عشان تلقى السجلات',
-    aboutApp: 'عن Azure Strap', openData: 'افتح مجلد البيانات',
+    aboutApp: 'عن Azure Strap', checkUpdate: 'تشيك على التحديثات', updChecking: 'جاري الفحص...', updDownloading: 'جاري تنزيل التحديث',
+    fpsNote: 'روبلوكس صار يتجاهل فلاقات الفريمات من برا. حدد الفريمات من داخل روبلوكس: Settings > Graphics > Maximum Frame Rate (لين 240 على ويندوز). والانشر يسوي الباقي: المجسمات البعيدة تصير أبسط وترجع كاملة التفاصيل لما تقرب منها.', openData: 'افتح مجلد البيانات',
     saveLaunch: 'احفظ وشغّل', restart: 'إعادة تشغيل', save: 'حفظ', close: 'إغلاق',
     saved: 'تم حفظ الإعدادات', unsaved: 'عندك تغييرات ما انحفظت',
 

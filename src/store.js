@@ -13,7 +13,7 @@ const DEFAULTS = {
   uncapFps: false,
   renderer: 'auto',
   textureQuality: 'auto',
-  perfPreset: 'off',        // off | balanced | max | lowend
+  perfPreset: 'balanced',   // off | balanced | max | lowend
   customFlags: '{}',
 
   // Bootstrapper
@@ -31,7 +31,11 @@ const DEFAULTS = {
   closeOnLaunch: true,
   handleLinks: true,
   useMods: true,
-  enabledPacks: []
+  enabledPacks: [],
+
+  // Updates (from GitHub Releases)
+  updateVersion: '',        // newest version we told the person about
+  updatePostponedAt: 0      // when they pressed "Later" (it becomes required after a day)
 };
 
 const file = () => path.join(app.getPath('userData'), 'settings.json');

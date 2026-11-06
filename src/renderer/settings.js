@@ -74,7 +74,6 @@ const PAGES = {
     root.append(head('bootstrapper'));
     root.append(toggle('confirmLaunch', { winOnly: true }));
     root.append(toggle('closeCrashHandler', { winOnly: true }));
-    root.append(toggle('uncapFps'));
     root.append(toggle('multiInstance', { winOnly: true }));
     root.append(select('priority', [['normal', t('p_normal')], ['abovenormal', t('p_abovenormal')], ['high', t('p_high')]], { winOnly: true }));
     root.append(toggle('backgroundUpdates'));
@@ -146,11 +145,10 @@ const PAGES = {
 
   fastflags(root) {
     root.append(head('fastflags'));
-    root.append(select('fpsCap', [[0, t('fpsDefault')], [30, '30'], [60, '60'], [75, '75'], [120, '120'], [144, '144'], [165, '165'], [240, '240'], [9999, t('fpsUnlimited')]], { numeric: true }));
+    root.append(el('div', 'card', `<div class="title">${esc(t('fpsCap_t'))}</div><p class="desc muted small mt0">${esc(t('fpsNote'))}</p>`));
 
     const rend = [['auto', t('auto')]];
     if (st.platform === 'win32') rend.push(['d3d11', 'Direct3D 11'], ['vulkan', 'Vulkan']);
-    if (st.platform === 'darwin') rend.push(['metal', 'Metal']);
     if (st.platform === 'linux') rend.push(['vulkan', 'Vulkan']);
     root.append(select('renderer', rend));
 
