@@ -2,7 +2,7 @@ name: Auto release from update zip
 on:
   push:
     paths:
-      - 'azure-update-*.zip'
+      - '*.zip'
 
 permissions:
   contents: write
@@ -25,10 +25,10 @@ jobs:
       - name: Apply update zip and pick the next version
         id: apply
         run: |
-          ZIP=$(ls azure-update-*.zip 2>/dev/null | sort -V | tail -n1 || true)
-          if [ -z "$ZIP" ]; then echo "no update zip, nothing to do"; echo "go=no" >> "$GITHUB_OUTPUT"; exit 0; fi
+          ZIP=$(ls -t *.zip 2>/dev/null | head -n1 || true)
+          if [ -z "$ZIP" ]; then echo "no zip, nothing to do"; echo "go=no" >> "$GITHUB_OUTPUT"; exit 0; fi
           unzip -o "$ZIP"
-          rm -f azure-update-*.zip
+          rm -f *.zip
           NEW=$(node -e "
             const { execSync } = require('child_process');
             const cmp = (a, b) => { const x = a.split('.').map(Number), y = b.split('.').map(Number); for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] - y[i]; return 0; };
