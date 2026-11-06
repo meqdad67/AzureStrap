@@ -1,0 +1,58 @@
+ Auto release from update zip
+on:
+  push:
+    paths:
+      - 'azure-update-*.zip'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: auto-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Apply update zip and pick the next version
+        id: apply
+        run: |
+          ZIP=$(ls azure-update-*.zip 2>/dev/null | sort -V | tail -n1 || true)
+          if [ -z "$ZIP" ]; then echo "no update zip, nothing to do"; echo "go=no" >> "$GITHUB_OUTPUT"; exit 0; fi
+          unzip -o "$ZIP"
+          rm -f azure-update-*.zip
+          NEW=$(node -e "
+            const { execSync } = require('child_process');
+            const cmp = (a, b) => { const x = a.split('.').map(Number), y = b.split('.').map(Number); for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] - y[i]; return 0; };
+            let top = require('./package.json').version;
+            for (const t of execSync('git tag').toString().split('\n').map((s) => s.trim().replace(/^v/, ''))) if (/^\d+\.\d+\.\d+$/.test(t) && cmp(t, top) > 0) top = t;
+            const [a, b, c] = top.split('.').map(Number);
+            console.log([a, b, c + 1].join('.'));
+          ")
+          npm version "$NEW" --no-git-tag-version
+          echo "go=yes" >> "$GITHUB_OUTPUT"
+          echo "version=$NEW" >> "$GITHUB_OUTPUT"
+      - name: Commit and tag
+        if: steps.apply.outputs.go == 'yes'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -A
+          git commit -m "v${{ steps.apply.outputs.version }} auto update"
+          git pull --rebase
+          git push origin HEAD
+          git tag "v${{ steps.apply.outputs.version }}"
+          git push origin "v${{ steps.apply.outputs.version }}"
+      - name: Trigger build
+        if: steps.apply.outputs.go == 'yes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build.yml --ref "v${{ steps.apply.outputs.version }}"
