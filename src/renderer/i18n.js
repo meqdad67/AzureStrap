@@ -12,7 +12,7 @@ window.I18N = {
     nav_fastflags: 'FastFlag Settings', nav_appearance: 'Appearance', nav_shortcuts: 'Shortcuts',
     nav_packs: 'Shaders', packs_t: 'Shaders', packs_d: 'Add skies, textures and other look changes. Packs are plain files, so they need no graphics card.',
     packsHelp: 'Import a .zip or a folder that uses Roblox\'s folder layout, for example content/sky/. Programs and scripts are never copied. These are not real shaders: Roblox blocks tools that hook into the game.',
-    packsImport: 'Import pack', packsEmpty: 'No packs yet. Import one to get started.', packFiles: 'files', remove: 'Remove',
+    packsImport: 'Import zip', packsImportFolder: 'Import folder', packsEmpty: 'No packs yet. Import one to get started.', packFiles: 'files', remove: 'Remove',
     packsFail: 'Could not import that pack.', packsEmptyZip: 'That pack has no files.',
     nav_settings: 'Settings', nav_about: 'About',
 
@@ -105,7 +105,7 @@ window.I18N = {
 
     nav_packs: 'الشيدرز', packs_t: 'الشيدرز', packs_d: 'أضف سماء وتكسترات وتغييرات شكل. الحزم ملفات عادية، فما تحتاج كرت شاشة.',
     packsHelp: 'استورد ملف zip أو مجلد بنفس ترتيب مجلدات روبلوكس، مثل content/sky/. البرامج والسكربتات ما تنسخ ابداً. هذي مو شيدرز حقيقية، لأن روبلوكس يمنع الأدوات اللي تتدخل في اللعبة.',
-    packsImport: 'استورد حزمة', packsEmpty: 'ما فيه حزم للحين. استورد وحدة.', packFiles: 'ملف', remove: 'احذف',
+    packsImport: 'استورد zip', packsImportFolder: 'استورد مجلد', packsEmpty: 'ما فيه حزم للحين. استورد وحدة.', packFiles: 'ملف', remove: 'احذف',
     packsFail: 'ما قدرنا نستورد الحزمة.', packsEmptyZip: 'الحزمة فاضية.',
     nav_integrations: 'التكامل', nav_bootstrapper: 'المشغّل', nav_mods: 'المودات',
     nav_fastflags: 'إعدادات FastFlag', nav_appearance: 'المظهر', nav_shortcuts: 'الاختصارات',

@@ -91,7 +91,7 @@ const VIEWS = {
     root.append(mk('h1', '', esc(installError ? t('w_error_t') : t('w_installing_t'))));
     root.append(mk('p', 'soft', esc(installError || t('w_installing_d'))));
     const body = mk('div', 'body');
-    body.innerHTML = `<h2 id="istatus" style="font-size:16px;margin:8px 0">${esc(t('checking'))}</h2>${waveHTML()}<p id="ipct" class="soft"></p>`;
+    body.innerHTML = `<h2 id="istatus" class="wiz-h">${esc(t('checking'))}</h2>${waveHTML()}<p id="ipct" class="soft"></p>`;
     root.append(body);
     if (installError) {
       const bar = mk('div', 'nav'); bar.append(mk('span'));

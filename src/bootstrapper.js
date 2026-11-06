@@ -275,6 +275,9 @@ async function ensureInstalled(root, progress, opts = {}) {
   const versions = path.join(root, 'Versions');
   await fsp.mkdir(versions, { recursive: true });
   const have = (await fsp.readdir(versions)).filter(d => fs.existsSync(path.join(versions, d, '.azure-ok')));
+  // Newest first, by the time each version was marked complete.
+  const stamp = d => { try { return fs.statSync(path.join(versions, d, '.azure-ok')).mtimeMs; } catch { return 0; } };
+  have.sort((a, b) => stamp(b) - stamp(a));
   let info;
   try {
     // With a copy already installed, give the version check only a few seconds, so a slow
@@ -283,7 +286,7 @@ async function ensureInstalled(root, progress, opts = {}) {
   } catch (e) {
     // Offline? Fall back to the newest installed version so the game still opens.
     if (!have.length) throw e;
-    return { dir: path.join(versions, have[have.length - 1]), version: have[have.length - 1], offline: true };
+    return { dir: path.join(versions, have[0]), version: have[0], offline: true };
   }
   const dir = path.join(versions, info.guid);
   let installed = fs.existsSync(path.join(dir, '.azure-ok'));
@@ -482,7 +485,10 @@ async function soberInstalled() {
   try { await execFileP('flatpak', ['info', SOBER]); return true; } catch { return false; }
 }
 
-function installSober() {
+async function installSober() {
+  try {
+    await execFileP('flatpak', ['remote-add', '--user', '--if-not-exists', 'flathub', 'https://dl.flathub.org/repo/flathub.flatpakrepo']);
+  } catch { /* flatpak missing: the install below reports it */ }
   return new Promise((resolve, reject) => {
     const p = spawn('flatpak', ['install', '-y', '--user', 'flathub', SOBER], { stdio: 'ignore' });
     p.on('error', reject);
@@ -509,7 +515,7 @@ const CODE_HINTS = {
 
 // Waits up to tries * stepMs for the game to appear. Throws a readable error if it
 // could not start, or if it closed right away (instead of failing silently).
-async function watchLaunch(child, isUp, stepMs = 1000, tries = 12) {
+async function watchLaunch(child, isUp, stepMs = 1000, tries = 20) {
   let exited = false, exitCode = null, spawnErr = null;
   child.once('error', e => { spawnErr = e; });
   child.once('exit', c => { exited = true; exitCode = c; });
@@ -517,12 +523,14 @@ async function watchLaunch(child, isUp, stepMs = 1000, tries = 12) {
     await sleep(stepMs);
     if (spawnErr) throw new Error(`Windows would not start Roblox: ${spawnErr.message}`);
     if (await isUp()) return;
+    if (exited && Number(exitCode) === 0) return;      // it handed over to another process: fine
     if (exited) {
       const hint = CODE_HINTS[Number(exitCode) >>> 0] || '';
       throw new Error(`Roblox closed right away (exit code ${exitCode === null ? 'none' : hexCode(exitCode)}).${hint}`);
     }
   }
-  throw new Error(`Roblox did not start within ${Math.round((stepMs * tries) / 1000)} seconds.`);
+  // Still alive but not listed (slow PC, or the process list could not be read): do not
+  // report a failure for a game that is most likely still starting.
 }
 
 async function launchChecked(dir, uri) {

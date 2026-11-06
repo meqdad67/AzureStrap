@@ -6,6 +6,10 @@ const store = require('./store');
 const icons = require('./icons');
 const { extractZip } = require('./unzip');
 
+// The AppImage cannot use Chromium's sandbox on many Linux systems (it needs setuid or user
+// namespaces) and would not start at all. The app only shows its own local pages.
+if (process.platform === 'linux') app.commandLine.appendSwitch('no-sandbox');
+
 let settings = null;
 let busy = false;
 let keepAlive = false;
@@ -26,7 +30,7 @@ const findUri = argv => argv.find(a => /^roblox(-player)?:/i.test(a)) || null;
 /* ---------- single instance + protocol ---------- */
 
 if (!app.requestSingleInstanceLock()) {
-  app.quit();
+  app.exit(0); // another copy is already running and gets our link; do not open any window here
 } else {
   app.on('second-instance', (_e, argv) => {
     const uri = findUri(argv);
@@ -280,9 +284,12 @@ ipcMain.handle('packsList', () => {
   }));
 });
 
-ipcMain.handle('packsImport', async e => {
+ipcMain.handle('packsImport', async (e, kind) => {
   const parent = BrowserWindow.fromWebContents(e.sender);
-  const r = await dialog.showOpenDialog(parent, { properties: ['openFile', 'openDirectory'], filters: [{ name: 'Zip', extensions: ['zip'] }] });
+  // A zip and a folder need separate dialogs: on Windows and Linux one dialog cannot pick both.
+  const r = await dialog.showOpenDialog(parent, kind === 'folder'
+    ? { properties: ['openDirectory'] }
+    : { properties: ['openFile'], filters: [{ name: 'Zip', extensions: ['zip'] }] });
   if (r.canceled || !r.filePaths[0]) return { ok: false, canceled: true };
   try {
     const src = r.filePaths[0];

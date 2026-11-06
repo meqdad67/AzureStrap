@@ -75,3 +75,9 @@ textarea { width: 100%; background: var(--card); border: 1px solid var(--line); 
 .icon-tile span { font-size: 12.5px; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* classes that replace inline styles (the page policy blocks inline style attributes) */
+.mt0 { margin-top: 0; }
+.m0 { margin: 0; }
+.btn-row.tight { margin: 0; align-items: center; }
+.wiz-h { font-size: 16px; margin: 8px 0; }

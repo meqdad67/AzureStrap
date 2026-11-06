@@ -108,7 +108,7 @@ const PAGES = {
   packs(root) {
     root.append(head('packs'));
     const top = el('div', 'card');
-    top.innerHTML = `<p class="desc muted small" style="margin-top:0">${esc(t('packsHelp'))}</p>`;
+    top.innerHTML = `<p class="desc muted small mt0">${esc(t('packsHelp'))}</p>`;
     const list = el('div');
     const render = async () => {
       const packs = await window.azure.packsList();
@@ -117,7 +117,7 @@ const PAGES = {
       packs.forEach(p => {
         const on = (draft.enabledPacks || []).includes(p.name);
         const c = el('div', 'card nested');
-        c.innerHTML = `<div class="row"><div class="txt"><div class="title">${esc(p.name)}</div><div class="desc">${p.files} ${esc(t('packFiles'))}</div></div><div class="btn-row" style="margin:0;align-items:center"><button class="btn rm">${esc(t('remove'))}</button><label class="switch"><input type="checkbox" ${on ? 'checked' : ''} aria-label="${esc(p.name)}"><span></span></label></div></div>`;
+        c.innerHTML = `<div class="row"><div class="txt"><div class="title">${esc(p.name)}</div><div class="desc">${p.files} ${esc(t('packFiles'))}</div></div><div class="btn-row tight"><button class="btn rm">${esc(t('remove'))}</button><label class="switch"><input type="checkbox" ${on ? 'checked' : ''} aria-label="${esc(p.name)}"><span></span></label></div></div>`;
         c.querySelector('input').addEventListener('change', e => {
           const set = new Set(draft.enabledPacks || []);
           if (e.target.checked) set.add(p.name); else set.delete(p.name);
@@ -132,11 +132,13 @@ const PAGES = {
       });
     };
     const row = el('div', 'btn-row');
-    row.append(button(t('packsImport'), async () => {
-      const r = await window.azure.packsImport();
+    const doImport = kind => async () => {
+      const r = await window.azure.packsImport(kind);
       if (r.ok) { draft.enabledPacks = [...new Set([...(draft.enabledPacks || []), r.name])]; markDirty(); render(); }
       else if (!r.canceled) $('msg').textContent = r.error === 'empty' ? t('packsEmptyZip') : t('packsFail');
-    }, true));
+    };
+    row.append(button(t('packsImport'), doImport('zip'), true));
+    row.append(button(t('packsImportFolder'), doImport('folder')));
     top.append(row);
     root.append(top, list);
     render();
@@ -227,7 +229,7 @@ const PAGES = {
   },
 
   about(root) {
-    const h = el('div', 'about-head', `<img src="../../assets/icon.png" alt=""><div><h1 style="margin:0">Azure Strap</h1><div class="muted">${esc(t('version'))} ${esc(st.appVersion)}</div></div>`);
+    const h = el('div', 'about-head', `<img src="../../assets/icon.png" alt=""><div><h1 class="m0">Azure Strap</h1><div class="muted">${esc(t('version'))} ${esc(st.appVersion)}</div></div>`);
     root.append(h);
     root.append(el('p', '', esc(t('about_d'))), el('p', 'muted small', esc(t('disclaimer'))));
   }
