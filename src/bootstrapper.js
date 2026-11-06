@@ -54,6 +54,11 @@ const PKG_DIRS = {
   // Roblox's compressed client-settings dictionary is shipped separately.
   // Without this package Roblox logs a missing Zstd dictionary on startup.
   'content-platform-dictionaries.zip': 'PlatformContent/pc/shared_compression_dictionaries/',
+  'extracontent-luapackages.zip': 'ExtraContent/LuaPackages/',
+  'extracontent-translations.zip': 'ExtraContent/translations/',
+  'extracontent-models.zip': 'ExtraContent/models/',
+  'extracontent-textures.zip': 'ExtraContent/textures/',
+  'extracontent-places.zip': 'ExtraContent/places/',
   'extracted-content-avatar.zip': 'ExtraContent/avatar/',
   'extracted-content-configs.zip': 'ExtraContent/configs/',
   'extracted-content-fonts.zip': 'ExtraContent/fonts/',
@@ -68,6 +73,9 @@ const PKG_DIRS = {
 const BLOCKED_MOD_EXT = new Set(['.exe', '.dll', '.bat', '.cmd', '.ps1', '.vbs', '.msi', '.sh', '.dylib', '.so', '.scr', '.com']);
 
 /* ---------- helpers ---------- */
+
+let logFn = () => {};
+const setLogger = fn => { logFn = typeof fn === 'function' ? fn : () => {}; };
 
 async function requestText(url, timeoutMs = REQUEST_MS) {
   const ac = new AbortController();
@@ -192,6 +200,9 @@ async function installWindows(info, dir, root, progress) {
   await fsp.mkdir(dl, { recursive: true });
 
   const pkgs = parseManifest(await textFromMirrors(`${info.guid}-rbxPkgManifest.txt`));
+  logFn(`install ${info.version}: ${pkgs.length} packages: ${pkgs.map(p => p.name).join(', ')}`);
+  const unmapped = pkgs.filter(p => !(p.name in PKG_DIRS)).map(p => p.name);
+  if (unmapped.length) logFn('packages extracted to the version folder root (no mapping): ' + unmapped.join(', '));
   const total = pkgs.reduce((a, p) => a + p.size, 0) || 1;
   let got = 0;
 
@@ -254,20 +265,18 @@ async function installMac(info, dir, root, progress) {
 }
 
 async function validateWindowsInstall(dir) {
-  // Do not mark a partially extracted client as installed. Roblox 0.745+ loads
-  // UniversalApp.rbxm as a mandatory local core patch and exits immediately if it
-  // is missing, even though RobloxPlayerBeta.exe itself is present.
-  const required = [
-    path.join(dir, 'RobloxPlayerBeta.exe'),
-    path.join(dir, 'content', 'models', 'UniversalApp', 'UniversalApp.rbxm')
-  ];
+  // Only check what must exist for Roblox to start: the game exe, and a content folder that
+  // is not empty. Other files differ between Roblox versions, so they are not required
+  // (requiring a wrong path here made every fresh install look "incomplete").
   const missing = [];
-  for (const file of required) {
-    try {
-      const st = await fsp.stat(file);
-      if (!st.isFile() || st.size === 0) missing.push(path.relative(dir, file));
-    } catch { missing.push(path.relative(dir, file)); }
-  }
+  try {
+    const st = await fsp.stat(path.join(dir, 'RobloxPlayerBeta.exe'));
+    if (!st.isFile() || st.size < 1024 * 1024) missing.push('RobloxPlayerBeta.exe');
+  } catch { missing.push('RobloxPlayerBeta.exe'); }
+  try {
+    const items = await fsp.readdir(path.join(dir, 'content'));
+    if (!items.length) missing.push('content');
+  } catch { missing.push('content'); }
   return { ok: missing.length === 0, missing };
 }
 
@@ -605,7 +614,7 @@ function launchSober(uri) {
 
 module.exports = {
   isWin, isMac, isLinux,
-  ensureInstalled, applySettings, launch, launchChecked, watchLaunch, ensureWebView2, parseManifest,
+  setLogger, ensureInstalled, applySettings, launch, launchChecked, watchLaunch, ensureWebView2, parseManifest,
   isRunning, holdMultiInstanceMutex, tunePriority, closeCrashHandler, runCleaner,
   soberInstalled, installSober, applySoberSettings, launchSober
 };

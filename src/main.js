@@ -22,6 +22,8 @@ function log(msg) {
   try { fs.appendFileSync(logFile(), `${new Date().toISOString()} ${msg}\n`); } catch { /* best effort */ }
 }
 
+bs.setLogger(log);
+
 const rootDir = () => path.join(app.getPath('userData'), 'Roblox');
 const modsDir = () => path.join(app.getPath('userData'), 'Mods');
 const packsDir = () => path.join(app.getPath('userData'), 'Packs');

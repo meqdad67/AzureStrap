@@ -15,8 +15,16 @@
     $('pct').textContent = p > 0 && p < 100 ? Math.round(p) + '%' : '';
   });
   window.azure.onVersion(({ offline }) => { $('sub').textContent = offline ? t('offline') : ''; });
+  $('retry').textContent = t('w_retry');
+  $('retry').addEventListener('click', () => {
+    $('error').hidden = true; $('retry').hidden = true;
+    $('cancel').textContent = t('cancel');
+    setWave(0); $('pct').textContent = '';
+    window.azure.play();
+  });
   window.azure.onError(msg => {
     $('error').textContent = msg; $('error').hidden = false;
+    $('retry').hidden = false;
     $('cancel').textContent = t('close');
   });
 })();

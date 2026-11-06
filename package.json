@@ -1,7 +1,7 @@
 {
   "name": "azure-strap",
   "productName": "Azure Strap",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Lightweight Roblox launcher for Windows, macOS and Linux",
   "main": "src/main.js",
   "scripts": {
